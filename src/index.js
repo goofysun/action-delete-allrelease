@@ -9,7 +9,7 @@ const octokit = new Octokit({
 });
 
 
-octokit.repos.getLatestRelease({
+octokit.repos.listReleases({
     owner,
     repo
 }).then(res => {
@@ -17,12 +17,18 @@ octokit.repos.getLatestRelease({
         console.error("💡 No latest release found, skip delete.");
         return
     }
-    const release_id = res.data.id
-    octokit.repos.deleteRelease({
+    
+     for (let key in res.data) {
+        var releasedata = res.data[key]
+        var release_id = releasedata.id
+        octokit.repos.deleteRelease({
         owner,
         repo,
         release_id
     })
+     }
+    
+   
 }).catch(
     err =>{
         if(err.status === 404){
