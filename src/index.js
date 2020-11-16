@@ -8,21 +8,6 @@ const octokit = new Octokit({
     auth: token
 });
 
-function deleteTags(tags){
-     for (let key in tags) {
-        console.error("find one tag");
-        var tagdata = tags[key]
-        var tagname = tagdata.name
-        var ref = "tags/" + tagname
-        octokit.git.deleteRef({
-            owner,
-            repo,
-            ref,
-        });
-     } 
-    setTimeout(findtags(),1000);
-
-}
 function findtags(){
     var res = octokit.repos.listTags({
       owner,
@@ -35,7 +20,45 @@ function findtags(){
     })
 }
 
+function deleteTags(tags){
+     for (let key in tags) {
+        console.error("find one tag");
+        var tagdata = tags[key]
+        var tagname = tagdata.name
+        var ref = "tags/" + tagname
+        octokit.git.deleteRef({
+            owner,
+            repo,
+            ref,
+        });
+     } 
+    setTimeout("findtags()",1000);
+
+}
+
 findtags()
+
+
+function findReleases(){
+    var res = octokit.repos.listReleases({
+      owner,
+      repo
+    }).then(res => {
+        if(res.data.length > 0){
+            console.error("find  tags");
+            deleteRelease(res.data)
+        }
+    }).catch(
+        err =>{
+            if(err.status === 404){
+                console.error("💡 No latest release found, skip delete.");
+                return
+            }
+            console.error("❌ Can't get latest Release");
+            console.error(err);
+        }
+    )
+}
 
 function deleteRelease(releases){
    for (let key in releases) {
@@ -58,29 +81,7 @@ function deleteRelease(releases){
             })
          }
      }
-    setTimeout(findReleases(),1000);
-}
-
-
-function findReleases(){
-    var res = octokit.repos.listReleases({
-      owner,
-      repo
-    }).then(res => {
-        if(res.data.length > 0){
-            console.error("find  tags");
-            deleteRelease(res.data)
-        }
-    }).catch(
-        err =>{
-            if(err.status === 404){
-                console.error("💡 No latest release found, skip delete.");
-                return
-            }
-            console.error("❌ Can't get latest Release");
-            console.error(err);
-        }
-    )
+    setTimeout("findReleases()",1000);
 }
 
 findReleases()
