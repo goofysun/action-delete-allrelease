@@ -10,15 +10,16 @@ const octokit = new Octokit({
 
 function deleteTags(tags){
      for (let key in tags) {
-            var tagdata = tags[key]
-            var tagname = tagdata.name
-            var ref = "tags/" + tagname
-            octokit.git.deleteRef({
-              owner,
-              repo,
-              ref,
-            });
-        } 
+        console.error("find one tag");
+        var tagdata = tags[key]
+        var tagname = tagdata.name
+        var ref = "tags/" + tagname
+        octokit.git.deleteRef({
+        owner,
+        repo,
+        ref,
+        });
+     } 
 }
 
 var res = octokit.repos.listTags({
@@ -43,7 +44,7 @@ octokit.repos.listReleases({
     }
     
      for (let key in res.data) {
-         console.error("find one data");
+        console.error("find one release");
         var releasedata = res.data[key]
         var release_id = releasedata.id
         octokit.repos.deleteRelease({
