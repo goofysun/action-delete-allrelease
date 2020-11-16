@@ -4,6 +4,20 @@ const token = env.INPUT_GITHUB_TOKEN
 const repository = env.INPUT_REPOSITORY || env.GITHUB_REPOSITORY
 const [owner, repo] = repository.split("/")
 
+function deleteTags(tags){
+     for (let key in tags) {
+            var tagdata = tags[key]
+            var tagname = tagdata.name
+            var ref = "tags/" + tagname
+            octokit.git.deleteRef({
+              owner,
+              repo,
+              ref,
+            });
+        } 
+}
+
+
 const octokit = new Octokit({
     auth: token
 });
@@ -12,16 +26,7 @@ var res = octokit.repos.listTags({
   repo
 })
 while(res.data){
-        for (let key in res.data) {
-            var tagdata = res.data[key]
-            var tagname = tagdata.name
-            var ref = "tags/" + tagname
-            octokit.git.deleteRef({
-              owner,
-              repo,
-              ref,
-            });
-        }    
+       deleteTags(res.data)
     res = octokit.repos.listTags({
         owner,
         repo
