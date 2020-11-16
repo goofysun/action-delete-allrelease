@@ -9,6 +9,26 @@ const octokit = new Octokit({
 });
 
 
+octokit.repos.listTags({
+  owner,
+  repo,
+})then(res => {
+  if(!res.data){
+        console.error("💡 No latest tags found, skip delete.");
+    }else{
+        for (let key in res.data) {
+            var tagdata = res.data[key]
+            var tagname = tagdata.name
+            var ref = "tags/" + tagname
+            octokit.git.deleteRef({
+              owner,
+              repo,
+              ref,
+            });
+        }
+    }
+}
+
 octokit.repos.listReleases({
     owner,
     repo
