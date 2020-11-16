@@ -20,7 +20,8 @@ function deleteTags(tags){
             ref,
         });
      } 
-    findtags()
+    setTimeout("findtags()","1000");
+
 }
 function findtags(){
     var res = octokit.repos.listTags({
@@ -57,6 +58,7 @@ function deleteRelease(releases){
             })
          }
      }
+    setTimeout("findReleases()","1000");
 }
 
 
