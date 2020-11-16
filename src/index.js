@@ -26,7 +26,17 @@ octokit.repos.listReleases({
         owner,
         repo,
         release_id
-    })
+        })
+         if(!releasedata.assets)
+         for (let assetskey in releasedata.assets) {
+            var assetsdata = releasedata.assets[assetskey]
+            var assetsdata_id = releasedata.id
+             octokit.repos.deleteReleaseAsset({
+                owner,
+                repo,
+                assetsdata_id
+            })
+         }
      }
     
    
