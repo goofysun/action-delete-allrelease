@@ -32,7 +32,9 @@ function deleteTags(tags){
             ref,
         });
      } 
-    setTimeout("findtags()",1000);
+    setTimeout(function(){
+        findtags()
+    },1000);
 
 }
 
@@ -81,7 +83,9 @@ function deleteRelease(releases){
             })
          }
      }
-    setTimeout("findReleases()",1000);
+    setTimeout(function(){
+        findReleases()
+    },1000);
 }
 
 findReleases()
