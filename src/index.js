@@ -20,7 +20,7 @@ function deleteTags(tags){
             ref,
         });
      } 
-    setTimeout("findtags()","1000");
+    setTimeout(findtags(),1000);
 
 }
 function findtags(){
@@ -58,7 +58,7 @@ function deleteRelease(releases){
             })
          }
      }
-    setTimeout("findReleases()","1000");
+    setTimeout(findReleases(),1000);
 }
 
 
