@@ -1,5 +1,3 @@
-import { Octokit } from "https://cdn.skypack.dev/@octokit/rest";
-
 const { Octokit } = require("@octokit/rest");
 const {env} = require ("process");
 const token = env.INPUT_GITHUB_TOKEN
