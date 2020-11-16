@@ -21,6 +21,7 @@ octokit.repos.listReleases({
     }
     
      for (let key in res.data) {
+         console.error("find one data");
         var releasedata = res.data[key]
         var release_id = releasedata.id
         octokit.repos.deleteRelease({
