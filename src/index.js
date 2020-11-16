@@ -8,8 +8,8 @@ const octokit = new Octokit({
     auth: token
 });
 
-function findtags(){
-    var res = octokit.repos.listTags({
+function findtagsAndRlese(){
+    octokit.repos.listTags({
       owner,
       repo
     }).then(res => {
@@ -17,7 +17,35 @@ function findtags(){
             console.error("find  tags");
             deleteTags(res.data)
         }
-    })
+    }).catch(
+        err =>{
+            if(err.status === 404){
+                console.error("💡 No latest tag found, skip delete.");
+            }else{
+            console.error("❌ Can't get tag Release");
+            console.error(err);
+            }
+        }
+    )
+    
+    octokit.repos.listReleases({
+      owner,
+      repo
+    }).then(res => {
+        if(res.data.length > 0){
+            console.error("find  tags");
+            deleteRelease(res.data)
+        }
+    }).catch(
+        err =>{
+            if(err.status === 404){
+                console.error("💡 No latest release found, skip delete.");
+            }else{
+            console.error("❌ Can't get latest Release");
+            console.error(err);
+            }
+        }
+    )
 }
 
 function deleteTags(tags){
@@ -31,36 +59,9 @@ function deleteTags(tags){
             repo,
             ref,
         });
-     } 
-    setTimeout(function(){
-        findtags()
-    },5000);
-
+     }
 }
 
-findtags()
-
-
-function findReleases(){
-    var res = octokit.repos.listReleases({
-      owner,
-      repo
-    }).then(res => {
-        if(res.data.length > 0){
-            console.error("find  tags");
-            deleteRelease(res.data)
-        }
-    }).catch(
-        err =>{
-            if(err.status === 404){
-                console.error("💡 No latest release found, skip delete.");
-                return
-            }
-            console.error("❌ Can't get latest Release");
-            console.error(err);
-        }
-    )
-}
 
 function deleteRelease(releases){
    for (let key in releases) {
@@ -84,9 +85,9 @@ function deleteRelease(releases){
          }
      }
     setTimeout(function(){
-        findReleases()
+        findtagsAndRlese()
     },5000);
 }
 
-findReleases()
+findtagsAndRlese()
 
