@@ -32,10 +32,14 @@ function findtagsAndRlese(){
       owner,
       repo
     }).then(res => {
+        console.error("list  releases");
         if(res.data.length > 0){
-            console.error("find  tags");
+            console.error("find  releases");
             deleteRelease(res.data)
+        }else{
+            console.error("find no releases");
         }
+        
     }).catch(
         err =>{
             if(err.status === 404){
