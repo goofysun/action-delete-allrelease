@@ -11,8 +11,7 @@ var res = octokit.repos.listTags({
   owner,
   repo
 })
-while(res){
-     if(res.data){
+while(res.data){
         for (let key in res.data) {
             var tagdata = res.data[key]
             var tagname = tagdata.name
@@ -22,9 +21,7 @@ while(res){
               repo,
               ref,
             });
-        }
-    }
-    
+        }    
     res = octokit.repos.listTags({
         owner,
         repo
