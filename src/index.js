@@ -7,13 +7,12 @@ const [owner, repo] = repository.split("/")
 const octokit = new Octokit({
     auth: token
 });
-
-
-octokit.repos.listTags({
+var res = octokit.repos.listTags({
   owner,
   repo
-}).then(res => {
-  if(res.data){
+})
+while(res){
+     if(res.data){
         for (let key in res.data) {
             var tagdata = res.data[key]
             var tagname = tagdata.name
@@ -25,7 +24,12 @@ octokit.repos.listTags({
             });
         }
     }
-})
+    
+    res = octokit.repos.listTags({
+        owner,
+        repo
+    })
+}
 
 octokit.repos.listReleases({
     owner,
