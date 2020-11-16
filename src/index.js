@@ -15,9 +15,9 @@ function deleteTags(tags){
         var tagname = tagdata.name
         var ref = "tags/" + tagname
         octokit.git.deleteRef({
-        owner,
-        repo,
-        ref,
+            owner,
+            repo,
+            ref,
         });
      } 
 }
@@ -27,7 +27,8 @@ var res = octokit.repos.listTags({
   repo
 })
 while(res.data){
-       deleteTags(res.data)
+    console.error("find  tags");
+    deleteTags(res.data)
     res = octokit.repos.listTags({
         owner,
         repo
