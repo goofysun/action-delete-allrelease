@@ -20,20 +20,21 @@ function deleteTags(tags){
             ref,
         });
      } 
+    findtags()
 }
-
-var res = octokit.repos.listTags({
-  owner,
-  repo
-})
-while(res.data){
-    console.error("find  tags");
-    deleteTags(res.data)
-    res = octokit.repos.listTags({
-        owner,
-        repo
+function findtags(){
+    var res = octokit.repos.listTags({
+      owner,
+      repo
+    }).then(res => {
+        if(res.data.length > 0){
+            console.error("find  tags");
+            deleteTags(res.data)
+        }
     })
 }
+
+findtags()
 
 octokit.repos.listReleases({
     owner,
