@@ -36,18 +36,10 @@ function findtags(){
 
 findtags()
 
-octokit.repos.listReleases({
-    owner,
-    repo
-}).then(res => {
-    if(!res.data){
-        console.error("💡 No latest release found, skip delete.");
-        return
-    }
-    
-     for (let key in res.data) {
+function deleteRelease(releases){
+   for (let key in releases) {
         console.error("find one release");
-        var releasedata = res.data[key]
+        var releasedata = releases[key]
         var release_id = releasedata.id
         octokit.repos.deleteRelease({
         owner,
@@ -65,17 +57,29 @@ octokit.repos.listReleases({
             })
          }
      }
-    
-   
-}).catch(
-    err =>{
-        if(err.status === 404){
-            console.error("💡 No latest release found, skip delete.");
-            return
-        }
-        console.error("❌ Can't get latest Release");
-        console.error(err);
-    }
-)
+}
 
+
+function findReleases(){
+    var res = octokit.repos.listReleases({
+      owner,
+      repo
+    }).then(res => {
+        if(res.data.length > 0){
+            console.error("find  tags");
+            deleteRelease(res.data)
+        }
+    }).catch(
+        err =>{
+            if(err.status === 404){
+                console.error("💡 No latest release found, skip delete.");
+                return
+            }
+            console.error("❌ Can't get latest Release");
+            console.error(err);
+        }
+    )
+}
+
+findReleases()
 
